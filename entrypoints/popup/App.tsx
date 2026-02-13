@@ -22,17 +22,17 @@ function Logo() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line x1="64" y1="28" x2="36" y2="60" stroke="#61dafb" strokeWidth="3" strokeLinecap="round" />
-      <line x1="64" y1="28" x2="92" y2="60" stroke="#61dafb" strokeWidth="3" strokeLinecap="round" />
-      <line x1="36" y1="68" x2="20" y2="96" stroke="#61dafb" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="36" y1="68" x2="52" y2="96" stroke="#61dafb" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="92" y1="68" x2="92" y2="96" stroke="#61dafb" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="64" cy="22" r="12" fill="#61dafb" />
-      <circle cx="36" cy="64" r="9" fill="#61dafb" opacity="0.85" />
-      <circle cx="92" cy="64" r="9" fill="#61dafb" opacity="0.85" />
-      <circle cx="20" cy="100" r="7" fill="#61dafb" opacity="0.65" />
-      <circle cx="52" cy="100" r="7" fill="#61dafb" opacity="0.65" />
-      <circle cx="92" cy="100" r="7" fill="#61dafb" opacity="0.65" />
+      <line x1="64" y1="28" x2="36" y2="60" stroke="#F97316" strokeWidth="3" strokeLinecap="round" />
+      <line x1="64" y1="28" x2="92" y2="60" stroke="#F97316" strokeWidth="3" strokeLinecap="round" />
+      <line x1="36" y1="68" x2="20" y2="96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="36" y1="68" x2="52" y2="96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="92" y1="68" x2="92" y2="96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="64" cy="22" r="12" fill="#F97316" />
+      <circle cx="36" cy="64" r="9" fill="#F97316" opacity="0.85" />
+      <circle cx="92" cy="64" r="9" fill="#F97316" opacity="0.85" />
+      <circle cx="20" cy="100" r="7" fill="#F97316" opacity="0.65" />
+      <circle cx="52" cy="100" r="7" fill="#F97316" opacity="0.65" />
+      <circle cx="92" cy="100" r="7" fill="#F97316" opacity="0.65" />
     </svg>
   );
 }
@@ -49,14 +49,24 @@ function formatRelativeTime(timestamp: number): string {
   return `${days}d ago`;
 }
 
+function HighlightedPath({ path }: { path: string }) {
+  const parts = path.split(' > ');
+  if (parts.length <= 1) return <>{path}</>;
+  const prefix = parts.slice(0, -1).join(' > ');
+  const target = parts[parts.length - 1];
+  return <>{prefix} &gt; <span className="target-component">{target}</span></>;
+}
+
 export default function App() {
   const [depth, setDepth] = useState(0);
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [copyFeedback, setCopyFeedback] = useState<number | null>(null);
   const [hoveredPath, setHoveredPath] = useState<string | null>(null);
+  const [frameworkAvailable, setFrameworkAvailable] = useState<boolean | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
 
-  // Load saved depth and history on mount
+  // Load saved depth and history on mount, detect framework
   useEffect(() => {
     chrome.storage.local.get('rctDepth', (result) => {
       if (typeof result.rctDepth === 'number') {
@@ -64,13 +74,23 @@ export default function App() {
       }
     });
     getHistory().then(setHistory);
+
+    // Proactively detect framework availability
+    chrome.runtime.sendMessage({ type: 'DETECT_FRAMEWORK' } satisfies RuntimeMessage);
+    const timeout = setTimeout(() => {
+      setFrameworkAvailable((prev) => (prev === null ? false : prev));
+    }, 2000);
+    return () => clearTimeout(timeout);
   }, []);
 
   // Listen for results from background
   useEffect(() => {
     const handler = (msg: RuntimeMessage) => {
-      if (msg.type === 'PICK_RESULT') {
+      if (msg.type === 'DETECT_RESULT') {
+        setFrameworkAvailable(msg.available);
+      } else if (msg.type === 'PICK_RESULT') {
         setStatus({ kind: 'copied', path: msg.path, framework: msg.framework });
+        showToast('Copied!');
         // History is saved by the background script; reload it
         getHistory().then(setHistory);
       } else if (msg.type === 'PICK_ERROR') {
@@ -81,6 +101,11 @@ export default function App() {
     return () => chrome.runtime.onMessage.removeListener(handler);
   }, []);
 
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 1200);
+  }
+
   function handleDepthChange(value: number) {
     const clamped = Math.max(0, Math.floor(value));
     setDepth(clamped);
@@ -90,12 +115,14 @@ export default function App() {
   function handlePick() {
     setStatus({ kind: 'picking' });
     chrome.runtime.sendMessage({ type: 'START_PICK', depth } satisfies RuntimeMessage);
+    window.close();
   }
 
   function handleHistoryCopy(entry: HistoryEntry, index: number) {
     navigator.clipboard.writeText(entry.path);
     setCopyFeedback(index);
     setTimeout(() => setCopyFeedback(null), 1500);
+    showToast('Copied!');
   }
 
   function handleClearHistory() {
@@ -104,7 +131,8 @@ export default function App() {
 
   return (
     <div className="popup">
-      <h1><Logo /> Copytree</h1>
+      {toast && <div className="toast">{toast}</div>}
+      <h1><Logo /> Groove</h1>
 
       <div className="field">
         <label htmlFor="depth">Depth</label>
@@ -121,9 +149,13 @@ export default function App() {
       <button
         className="pick-btn"
         onClick={handlePick}
-        disabled={status.kind === 'picking'}
+        disabled={frameworkAvailable !== true || status.kind === 'picking'}
       >
-        {status.kind === 'picking' ? 'Click an element...' : 'Pick Element'}
+        {status.kind === 'picking'
+          ? 'Click an element...'
+          : frameworkAvailable === null
+            ? 'Detecting...'
+            : 'Pick Element'}
       </button>
 
       {status.kind === 'copied' && (
@@ -131,7 +163,7 @@ export default function App() {
           <span className={`framework-badge framework-${status.framework}`}>
             {status.framework}
           </span>
-          {' '}Copied: <code>{status.path}</code>
+          {' '}Copied: <code><HighlightedPath path={status.path} /></code>
         </div>
       )}
 
@@ -139,7 +171,15 @@ export default function App() {
         <div className="result error">{status.message}</div>
       )}
 
-      <p className="note">Best results on dev builds (React, Vue, Angular, Svelte)</p>
+      {frameworkAvailable === false && (
+        <div className="result info">
+          No supported framework detected. Works with React, Vue, Angular, or Svelte dev builds.
+        </div>
+      )}
+
+      {frameworkAvailable !== false && (
+        <p className="note">Best results on dev builds (React, Vue, Angular, Svelte)</p>
+      )}
 
       {history.length > 0 && (
         <div className="history-section">
@@ -161,7 +201,7 @@ export default function App() {
                 <span className={`framework-badge framework-${entry.framework}`}>
                   {entry.framework}
                 </span>
-                <span className="history-item-path">{entry.path}</span>
+                <span className="history-item-path"><HighlightedPath path={entry.path} /></span>
                 <span className="history-item-time">
                   {formatRelativeTime(entry.timestamp)}
                 </span>
@@ -169,10 +209,14 @@ export default function App() {
             ))}
           </div>
           {hoveredPath && (
-            <div className="history-preview">{hoveredPath}</div>
+            <div className="history-preview"><HighlightedPath path={hoveredPath} /></div>
           )}
         </div>
       )}
+
+      <a className="coffee-link" href="https://buymeacoffee.com/michal.hachula" target="_blank" rel="noopener noreferrer">
+        ☕ Buy me a coffee
+      </a>
     </div>
   );
 }

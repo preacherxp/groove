@@ -1,5 +1,5 @@
-import type { FiberPathRequest, FiberPathResponse } from '~/utils/messaging';
-import { detectAndRead } from '~/utils/readers/detect';
+import type { FiberPathRequest, FiberPathResponse, HoverTreeRequest, HoverTreeResponse, DetectFrameworkRequest, DetectFrameworkResponse } from '~/utils/messaging';
+import { detectAndRead, detectFramework } from '~/utils/readers/detect';
 
 export default defineUnlistedScript({
   main() {
@@ -42,9 +42,55 @@ export default defineUnlistedScript({
       dispatch(response);
     }) as EventListener);
 
+    scriptEl.addEventListener('rct-get-hover-tree', ((e: CustomEvent<HoverTreeRequest>) => {
+      const { hoverId, depth } = e.detail;
+      const response: HoverTreeResponse = { hoverId };
+
+      try {
+        const el = document.querySelector('[data-rct-hover]');
+        if (!el) return; // silent fail for hover
+
+        const result = detectAndRead(el);
+        if (!result) return; // silent fail — no framework detected
+
+        response.framework = result.framework;
+
+        if (result.components.length === 0) return;
+
+        const trimmed = depth > 0 ? result.components.slice(-depth) : result.components;
+        response.components = trimmed;
+      } catch {
+        return; // silent fail for hover
+      }
+
+      dispatchHover(response);
+    }) as EventListener);
+
+    scriptEl.addEventListener('rct-detect-framework', ((e: CustomEvent<DetectFrameworkRequest>) => {
+      const { detectId } = e.detail;
+      let response: DetectFrameworkResponse;
+
+      try {
+        const result = detectFramework();
+        response = { detectId, ...result };
+      } catch {
+        response = { detectId, available: false };
+      }
+
+      scriptEl!.dispatchEvent(
+        new CustomEvent('rct-detect-framework-result', { detail: response }),
+      );
+    }) as EventListener);
+
     function dispatch(detail: FiberPathResponse) {
       scriptEl!.dispatchEvent(
         new CustomEvent('rct-fiber-path-result', { detail }),
+      );
+    }
+
+    function dispatchHover(detail: HoverTreeResponse) {
+      scriptEl!.dispatchEvent(
+        new CustomEvent('rct-hover-tree-result', { detail }),
       );
     }
   },

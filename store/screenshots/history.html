@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, height=800">
+<title>Groove - History</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1280px;
+    height: 800px;
+    background: #0d1117;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+  }
+
+  /* Left side - text */
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+  }
+
+  .left h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+  }
+
+  .left h2 span {
+    color: #F97316;
+  }
+
+  .left p {
+    font-size: 16px;
+    color: #8b949e;
+    line-height: 1.6;
+  }
+
+  /* Right side - popup mockup */
+  .popup-wrapper {
+    width: 360px;
+    background: #0d1117;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .popup {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e6edf3;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .field label {
+    font-weight: 500;
+    min-width: 44px;
+    color: #8b949e;
+  }
+
+  .field input {
+    width: 60px;
+    padding: 4px 8px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+    background: #161b22;
+    color: #e6edf3;
+  }
+
+  .field .hint {
+    color: #484f58;
+    font-size: 12px;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+  }
+
+  .pick-btn {
+    padding: 8px 16px;
+    background: transparent;
+    color: #F97316;
+    border: 1px solid #F97316;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #484f58;
+    text-align: center;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+  }
+
+  /* History */
+  .history-section {
+    border-top: 1px solid #30363d;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .history-header span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .history-clear-btn {
+    background: none;
+    border: none;
+    color: #484f58;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .history-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+
+  .history-item:first-child {
+    background: rgba(46, 160, 67, 0.1);
+  }
+
+  .framework-badge {
+    display: inline-block;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .framework-react { background: #0ea5e9; }
+  .framework-vue { background: #42b883; }
+  .framework-angular { background: #dd1b16; }
+  .framework-svelte { background: #ff3e00; }
+
+  .history-item-path {
+    flex: 1;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+    font-size: 11px;
+    color: #e6edf3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .target-component {
+    color: #F97316;
+    font-weight: 600;
+  }
+
+  .history-item-time {
+    font-size: 10px;
+    color: #484f58;
+    flex-shrink: 0;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+  }
+
+  .history-preview {
+    padding: 6px 8px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+    font-size: 11px;
+    color: #e6edf3;
+    word-break: break-all;
+  }
+
+  .coffee-link {
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    color: #484f58;
+    text-decoration: none;
+    padding: 4px 0 0;
+  }
+</style>
+</head>
+<body>
+  <div class="left">
+    <h2>Your component paths, <span>always at hand</span></h2>
+    <p>Groove remembers every path you copy. Click any history entry to re-copy it instantly. Works across all supported frameworks.</p>
+  </div>
+
+  <div class="popup-wrapper">
+    <div class="popup">
+      <h1>
+        <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+          <line x1="64" y1="28" x2="36" y2="60" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
+          <line x1="64" y1="28" x2="92" y2="60" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
+          <line x1="36" y1="68" x2="20" y2="96" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="36" y1="68" x2="52" y2="96" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="92" y1="68" x2="92" y2="96" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="64" cy="22" r="12" fill="#F97316"/>
+          <circle cx="36" cy="64" r="9" fill="#F97316" opacity="0.85"/>
+          <circle cx="92" cy="64" r="9" fill="#F97316" opacity="0.85"/>
+          <circle cx="20" cy="100" r="7" fill="#F97316" opacity="0.65"/>
+          <circle cx="52" cy="100" r="7" fill="#F97316" opacity="0.65"/>
+          <circle cx="92" cy="100" r="7" fill="#F97316" opacity="0.65"/>
+        </svg>
+        Groove
+      </h1>
+
+      <div class="field">
+        <label>Depth</label>
+        <input type="number" value="0" readonly>
+        <span class="hint">0 = full path</span>
+      </div>
+
+      <button class="pick-btn">Pick Element</button>
+
+      <p class="note">Best results on dev builds (React, Vue, Angular, Svelte)</p>
+
+      <div class="history-section">
+        <div class="history-header">
+          <span>History</span>
+          <button class="history-clear-btn">Clear</button>
+        </div>
+        <div class="history-list">
+          <div class="history-item">
+            <span class="framework-badge framework-react">react</span>
+            <span class="history-item-path">App &gt; Dashboard &gt; <span class="target-component">AnalyticsCard</span></span>
+            <span class="history-item-time">just now</span>
+          </div>
+          <div class="history-item">
+            <span class="framework-badge framework-vue">vue</span>
+            <span class="history-item-path">App &gt; MainLayout &gt; <span class="target-component">ProductCard</span></span>
+            <span class="history-item-time">3m ago</span>
+          </div>
+          <div class="history-item">
+            <span class="framework-badge framework-angular">angular</span>
+            <span class="history-item-path">AppComponent &gt; ProfilePage &gt; <span class="target-component">AvatarComponent</span></span>
+            <span class="history-item-time">8m ago</span>
+          </div>
+          <div class="history-item">
+            <span class="framework-badge framework-svelte">svelte</span>
+            <span class="history-item-path">App &gt; TodoApp &gt; TodoList &gt; <span class="target-component">TodoItem</span></span>
+            <span class="history-item-time">15m ago</span>
+          </div>
+          <div class="history-item">
+            <span class="framework-badge framework-react">react</span>
+            <span class="history-item-path">App &gt; Layout &gt; Sidebar &gt; <span class="target-component">NavItem</span></span>
+            <span class="history-item-time">22m ago</span>
+          </div>
+          <div class="history-item">
+            <span class="framework-badge framework-vue">vue</span>
+            <span class="history-item-path">App &gt; UserProfile &gt; <span class="target-component">EditForm</span></span>
+            <span class="history-item-time">1h ago</span>
+          </div>
+        </div>
+        <div class="history-preview">App &gt; Dashboard &gt; <span class="target-component">AnalyticsCard</span></div>
+      </div>
+
+      <a class="coffee-link" href="#">Buy me a coffee</a>
+    </div>
+  </div>
+</body>
+</html>

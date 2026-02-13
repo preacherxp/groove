@@ -5,13 +5,16 @@
   --text-secondary: #8b949e;
   --text-muted: #484f58;
   --border: #30363d;
-  --accent: #61dafb;
+  --accent: #F97316;
   --success-bg: rgba(46, 160, 67, 0.1);
   --success-border: #2ea043;
   --success-text: #56d364;
   --error-bg: rgba(248, 81, 73, 0.1);
   --error-border: #f85149;
   --error-text: #f85149;
+  --info-bg: rgba(139, 148, 158, 0.1);
+  --info-border: #484f58;
+  --info-text: #8b949e;
 }
 
 * {
@@ -29,10 +32,46 @@ body {
 }
 
 .popup {
+  position: relative;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* Copy toast */
+.toast {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--success-border);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  pointer-events: none;
+  animation: toast-pop 1.2s ease forwards;
+  z-index: 10;
+}
+
+@keyframes toast-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.95);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.95);
+  }
 }
 
 h1 {
@@ -93,7 +132,7 @@ h1 {
 }
 
 .pick-btn:hover:not(:disabled) {
-  background: rgba(97, 218, 251, 0.1);
+  background: rgba(249, 115, 22, 0.1);
 }
 
 .pick-btn:disabled {
@@ -119,6 +158,12 @@ h1 {
   background: var(--error-bg);
   border-color: var(--error-border);
   color: var(--error-text);
+}
+
+.result.info {
+  background: var(--info-bg);
+  border-color: var(--info-border);
+  color: var(--info-text);
 }
 
 .result code {
@@ -256,9 +301,28 @@ h1 {
   text-overflow: ellipsis;
 }
 
+.target-component {
+  color: var(--accent);
+  font-weight: 600;
+}
+
 .history-item-time {
   font-size: 10px;
   color: var(--text-muted);
   flex-shrink: 0;
   font-family: 'SF Mono', Monaco, Consolas, monospace;
+}
+
+.coffee-link {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 4px 0 0;
+  transition: color 150ms;
+}
+
+.coffee-link:hover {
+  color: var(--accent);
 }

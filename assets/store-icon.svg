@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Dark background with rounded corners -->
+  <rect width="128" height="128" rx="16" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
   <!-- Branches (lines) -->
   <line x1="64" y1="28" x2="36" y2="60" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
   <line x1="64" y1="28" x2="92" y2="60" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
