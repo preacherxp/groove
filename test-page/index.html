@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>React Test Page</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    .sidebar { border: 1px solid #ccc; padding: 16px; margin: 8px 0; }
+    .nav-item { padding: 8px; cursor: pointer; }
+    .nav-item:hover { background: #f0f0f0; }
+    button { padding: 8px 16px; background: #61dafb; border: none; border-radius: 4px; cursor: pointer; }
+    .card { border: 1px solid #ddd; padding: 16px; margin: 8px 0; border-radius: 8px; }
+    h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const e = React.createElement;
+
+    function Button({ children }) {
+      return e('button', null, children);
+    }
+
+    const MemoButton = React.memo(Button);
+    MemoButton.displayName = 'MemoButton';
+
+    const FancyInput = React.forwardRef(function FancyInput(props, ref) {
+      return e('input', { ref, placeholder: props.placeholder, style: { padding: '8px', margin: '4px 0' } });
+    });
+
+    function NavItem({ label }) {
+      return e('div', { className: 'nav-item' }, e(Button, null, label));
+    }
+
+    function Sidebar() {
+      return e('div', { className: 'sidebar' },
+        e('h2', null, 'Navigation'),
+        e(NavItem, { label: 'Home' }),
+        e(NavItem, { label: 'About' }),
+        e(NavItem, { label: 'Contact' })
+      );
+    }
+
+    function Card({ title, children }) {
+      return e('div', { className: 'card' },
+        e('h2', null, title),
+        children
+      );
+    }
+
+    function Layout({ children }) {
+      return e('div', { style: { display: 'flex', gap: '24px' } },
+        e(Sidebar),
+        e('div', { style: { flex: 1 } }, children)
+      );
+    }
+
+    function App() {
+      return e('div', null,
+        e('h1', null, 'React Components Tree - Test Page'),
+        e(Layout, null,
+          e(Card, { title: 'Welcome' },
+            e('p', null, 'Click any element after activating the extension picker.'),
+            e(MemoButton, null, 'Memo Button'),
+            e('br'),
+            e('br'),
+            e(FancyInput, { placeholder: 'ForwardRef input' })
+          )
+        )
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+  </script>
+</body>
+</html>

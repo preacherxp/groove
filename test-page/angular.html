@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Angular Test Page (Simulated Dev Mode)</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    .sidebar { border: 1px solid #ccc; padding: 16px; margin: 8px 0; }
+    .nav-item { padding: 8px; cursor: pointer; }
+    .nav-item:hover { background: #f0f0f0; }
+    button { padding: 8px 16px; background: #dd1b16; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .card { border: 1px solid #ddd; padding: 16px; margin: 8px 0; border-radius: 8px; }
+    h2 { margin-top: 0; }
+    app-root, app-layout, app-sidebar, app-nav-item, app-card { display: block; }
+  </style>
+</head>
+<body>
+  <!--
+    This simulates an Angular dev-mode page by attaching component instances
+    to custom elements and providing a mock window.ng API.
+  -->
+  <app-root>
+    <h1>Angular Components Tree - Test Page (Simulated)</h1>
+    <app-layout>
+      <div style="display: flex; gap: 24px;">
+        <app-sidebar>
+          <div class="sidebar">
+            <h2>Navigation</h2>
+            <app-nav-item><div class="nav-item"><button>Home</button></div></app-nav-item>
+            <app-nav-item><div class="nav-item"><button>About</button></div></app-nav-item>
+            <app-nav-item><div class="nav-item"><button>Contact</button></div></app-nav-item>
+          </div>
+        </app-sidebar>
+        <div style="flex: 1;">
+          <app-card>
+            <div class="card">
+              <h2>Welcome</h2>
+              <p>Click any element after activating the extension picker.</p>
+              <button>Angular Button</button>
+            </div>
+          </app-card>
+        </div>
+      </div>
+    </app-layout>
+  </app-root>
+
+  <script>
+    // Simulate Angular dev-mode by creating component constructors
+    // and attaching instances to custom elements via ng.getComponent()
+
+    function AppComponent() {}
+    function LayoutComponent() {}
+    function SidebarComponent() {}
+    function NavItemComponent() {}
+    function CardComponent() {}
+
+    const componentMap = new Map();
+
+    function attachComponent(selector, Ctor) {
+      document.querySelectorAll(selector).forEach((el) => {
+        componentMap.set(el, new Ctor());
+      });
+    }
+
+    attachComponent('app-root', AppComponent);
+    attachComponent('app-layout', LayoutComponent);
+    attachComponent('app-sidebar', SidebarComponent);
+    attachComponent('app-nav-item', NavItemComponent);
+    attachComponent('app-card', CardComponent);
+
+    // Simulate the ng dev-mode global
+    window.ng = {
+      getComponent(el) {
+        return componentMap.get(el) || null;
+      },
+    };
+  </script>
+</body>
+</html>

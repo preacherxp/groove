@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Svelte Test Page (Simulated Dev Mode)</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    .sidebar { border: 1px solid #ccc; padding: 16px; margin: 8px 0; }
+    .nav-item { padding: 8px; cursor: pointer; }
+    .nav-item:hover { background: #f0f0f0; }
+    button { padding: 8px 16px; background: #ff3e00; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .card { border: 1px solid #ddd; padding: 16px; margin: 8px 0; border-radius: 8px; }
+    h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <!--
+    This simulates a Svelte 4 dev-mode page by attaching __svelte_meta
+    to DOM elements, which is what Svelte does in dev mode for HMR.
+  -->
+  <div id="app">
+    <h1>Svelte Components Tree - Test Page (Simulated)</h1>
+    <div id="layout">
+      <div style="display: flex; gap: 24px;">
+        <div id="sidebar" class="sidebar">
+          <h2>Navigation</h2>
+          <div id="nav1" class="nav-item"><button id="btn1">Home</button></div>
+          <div id="nav2" class="nav-item"><button id="btn2">About</button></div>
+          <div id="nav3" class="nav-item"><button id="btn3">Contact</button></div>
+        </div>
+        <div style="flex: 1;">
+          <div id="card" class="card">
+            <h2>Welcome</h2>
+            <p>Click any element after activating the extension picker.</p>
+            <button id="btn-main">Svelte Button</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simulate Svelte 4 dev-mode __svelte_meta on elements
+    function attachMeta(id, file) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.__svelte_meta = { loc: { file } };
+      }
+    }
+
+    attachMeta('app', 'src/App.svelte');
+    attachMeta('layout', 'src/lib/Layout.svelte');
+    attachMeta('sidebar', 'src/lib/Sidebar.svelte');
+    attachMeta('nav1', 'src/lib/NavItem.svelte');
+    attachMeta('nav2', 'src/lib/NavItem.svelte');
+    attachMeta('nav3', 'src/lib/NavItem.svelte');
+    attachMeta('card', 'src/lib/Card.svelte');
+
+    // Also attach to buttons inside their parent components
+    document.getElementById('btn1').__svelte_meta = { loc: { file: 'src/lib/NavItem.svelte' } };
+    document.getElementById('btn2').__svelte_meta = { loc: { file: 'src/lib/NavItem.svelte' } };
+    document.getElementById('btn3').__svelte_meta = { loc: { file: 'src/lib/NavItem.svelte' } };
+    document.getElementById('btn-main').__svelte_meta = { loc: { file: 'src/lib/Card.svelte' } };
+  </script>
+</body>
+</html>

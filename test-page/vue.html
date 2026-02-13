@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vue 3 Test Page</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    .sidebar { border: 1px solid #ccc; padding: 16px; margin: 8px 0; }
+    .nav-item { padding: 8px; cursor: pointer; }
+    .nav-item:hover { background: #f0f0f0; }
+    button { padding: 8px 16px; background: #42b883; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .card { border: 1px solid #ddd; padding: 16px; margin: 8px 0; border-radius: 8px; }
+    h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    const { createApp, defineComponent, h } = Vue;
+
+    const MyButton = defineComponent({
+      name: 'MyButton',
+      props: ['label'],
+      setup(props, { slots }) {
+        return () => h('button', null, slots.default ? slots.default() : props.label);
+      },
+    });
+
+    const NavItem = defineComponent({
+      name: 'NavItem',
+      props: ['label'],
+      components: { MyButton },
+      setup(props) {
+        return () => h('div', { class: 'nav-item' }, [
+          h(MyButton, null, { default: () => props.label }),
+        ]);
+      },
+    });
+
+    const Sidebar = defineComponent({
+      name: 'Sidebar',
+      components: { NavItem },
+      setup() {
+        return () => h('div', { class: 'sidebar' }, [
+          h('h2', null, 'Navigation'),
+          h(NavItem, { label: 'Home' }),
+          h(NavItem, { label: 'About' }),
+          h(NavItem, { label: 'Contact' }),
+        ]);
+      },
+    });
+
+    const Card = defineComponent({
+      name: 'Card',
+      props: ['title'],
+      setup(props, { slots }) {
+        return () => h('div', { class: 'card' }, [
+          h('h2', null, props.title),
+          slots.default ? slots.default() : null,
+        ]);
+      },
+    });
+
+    const Layout = defineComponent({
+      name: 'Layout',
+      components: { Sidebar },
+      setup(_, { slots }) {
+        return () => h('div', { style: 'display: flex; gap: 24px;' }, [
+          h(Sidebar),
+          h('div', { style: 'flex: 1;' }, slots.default ? slots.default() : null),
+        ]);
+      },
+    });
+
+    const App = defineComponent({
+      name: 'App',
+      components: { Layout, Card, MyButton },
+      setup() {
+        return () => h('div', null, [
+          h('h1', null, 'Vue 3 Components Tree - Test Page'),
+          h(Layout, null, {
+            default: () => h(Card, { title: 'Welcome' }, {
+              default: () => [
+                h('p', null, 'Click any element after activating the extension picker.'),
+                h(MyButton, { label: 'Vue Button' }),
+              ],
+            }),
+          }),
+        ]);
+      },
+    });
+
+    createApp(App).mount('#app');
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- Branches (lines) -->
+  <line x1="64" y1="28" x2="36" y2="60" stroke="#61dafb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="64" y1="28" x2="92" y2="60" stroke="#61dafb" stroke-width="3" stroke-linecap="round"/>
+  <line x1="36" y1="68" x2="20" y2="96" stroke="#61dafb" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="36" y1="68" x2="52" y2="96" stroke="#61dafb" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="92" y1="68" x2="92" y2="96" stroke="#61dafb" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Root node -->
+  <circle cx="64" cy="22" r="12" fill="#61dafb"/>
+  <!-- Level 2 nodes -->
+  <circle cx="36" cy="64" r="9" fill="#61dafb" opacity="0.85"/>
+  <circle cx="92" cy="64" r="9" fill="#61dafb" opacity="0.85"/>
+  <!-- Level 3 nodes (leaves) -->
+  <circle cx="20" cy="100" r="7" fill="#61dafb" opacity="0.65"/>
+  <circle cx="52" cy="100" r="7" fill="#61dafb" opacity="0.65"/>
+  <circle cx="92" cy="100" r="7" fill="#61dafb" opacity="0.65"/>
+</svg>
