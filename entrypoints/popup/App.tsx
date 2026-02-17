@@ -267,11 +267,10 @@ export default function App() {
               </div>
             ))}
           </div>
-          {hoveredPath && (
-            <div className="history-preview">
-              <HighlightedPath path={hoveredPath} />
-            </div>
-          )}
+          <div className={`history-preview${hoveredPath ? " visible" : ""}`}>
+            {hoveredPath && <HighlightedPath path={hoveredPath} />}
+            {!hoveredPath && "\u00A0"}
+          </div>
         </div>
       )}
 

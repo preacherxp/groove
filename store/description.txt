@@ -1,0 +1,14 @@
+Groove is a developer tool that lets you instantly copy the component tree path of any element on a web page. Stop digging through React DevTools or Vue Inspector to find where a component lives — just click it.
+
+How it works: Click "Pick Element" in the popup, hover over any element to preview its component tree, then click to copy the full path to your clipboard. Paths like "App > Dashboard > StatsGrid > MetricCard" are ready to paste into your code, PRs, or bug reports.
+
+Works with React, Vue, Angular, and Svelte. Supports dev builds where framework debug metadata is available.
+
+Features:
+- One-click element picker with live component tree preview on hover
+- Adjustable depth control to shorten long paths
+- Copy history with framework badges so you can re-copy previous paths
+- Framework auto-detection with color-coded badges
+- Dark theme that matches your dev tools
+
+All data stays on your device. No analytics, no network requests, no account required.
