@@ -1,17 +1,13 @@
-import { useState, useEffect } from 'react';
-import type { RuntimeMessage } from '~/utils/messaging';
-import type { FrameworkName } from '~/utils/readers/types';
-import {
-  getHistory,
-  clearHistory,
-  type HistoryEntry,
-} from '~/utils/history';
+import { useState, useEffect } from "react";
+import type { RuntimeMessage } from "~/utils/messaging";
+import type { FrameworkName } from "~/utils/readers/types";
+import { getHistory, clearHistory, type HistoryEntry } from "~/utils/history";
 
 type Status =
-  | { kind: 'idle' }
-  | { kind: 'picking' }
-  | { kind: 'copied'; path: string; framework: FrameworkName }
-  | { kind: 'error'; message: string };
+  | { kind: "idle" }
+  | { kind: "picking" }
+  | { kind: "copied"; path: string; framework: FrameworkName }
+  | { kind: "error"; message: string };
 
 function Logo() {
   return (
@@ -22,11 +18,51 @@ function Logo() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line x1="64" y1="28" x2="36" y2="60" stroke="#F97316" strokeWidth="3" strokeLinecap="round" />
-      <line x1="64" y1="28" x2="92" y2="60" stroke="#F97316" strokeWidth="3" strokeLinecap="round" />
-      <line x1="36" y1="68" x2="20" y2="96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="36" y1="68" x2="52" y2="96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="92" y1="68" x2="92" y2="96" stroke="#F97316" strokeWidth="2.5" strokeLinecap="round" />
+      <line
+        x1="64"
+        y1="28"
+        x2="36"
+        y2="60"
+        stroke="#F97316"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <line
+        x1="64"
+        y1="28"
+        x2="92"
+        y2="60"
+        stroke="#F97316"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <line
+        x1="36"
+        y1="68"
+        x2="20"
+        y2="96"
+        stroke="#F97316"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="36"
+        y1="68"
+        x2="52"
+        y2="96"
+        stroke="#F97316"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="92"
+        y1="68"
+        x2="92"
+        y2="96"
+        stroke="#F97316"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
       <circle cx="64" cy="22" r="12" fill="#F97316" />
       <circle cx="36" cy="64" r="9" fill="#F97316" opacity="0.85" />
       <circle cx="92" cy="64" r="9" fill="#F97316" opacity="0.85" />
@@ -40,7 +76,7 @@ function Logo() {
 function formatRelativeTime(timestamp: number): string {
   const diff = Date.now() - timestamp;
   const seconds = Math.floor(diff / 1000);
-  if (seconds < 60) return 'just now';
+  if (seconds < 60) return "just now";
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `${minutes}m ago`;
   const hours = Math.floor(minutes / 60);
@@ -50,33 +86,41 @@ function formatRelativeTime(timestamp: number): string {
 }
 
 function HighlightedPath({ path }: { path: string }) {
-  const parts = path.split(' > ');
+  const parts = path.split(" > ");
   if (parts.length <= 1) return <>{path}</>;
-  const prefix = parts.slice(0, -1).join(' > ');
+  const prefix = parts.slice(0, -1).join(" > ");
   const target = parts[parts.length - 1];
-  return <>{prefix} &gt; <span className="target-component">{target}</span></>;
+  return (
+    <>
+      {prefix} &gt; <span className="target-component">{target}</span>
+    </>
+  );
 }
 
 export default function App() {
   const [depth, setDepth] = useState(0);
-  const [status, setStatus] = useState<Status>({ kind: 'idle' });
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [copyFeedback, setCopyFeedback] = useState<number | null>(null);
   const [hoveredPath, setHoveredPath] = useState<string | null>(null);
-  const [frameworkAvailable, setFrameworkAvailable] = useState<boolean | null>(null);
+  const [frameworkAvailable, setFrameworkAvailable] = useState<boolean | null>(
+    null,
+  );
   const [toast, setToast] = useState<string | null>(null);
 
   // Load saved depth and history on mount, detect framework
   useEffect(() => {
-    chrome.storage.local.get('rctDepth', (result) => {
-      if (typeof result.rctDepth === 'number') {
+    chrome.storage.local.get("rctDepth", (result) => {
+      if (typeof result.rctDepth === "number") {
         setDepth(result.rctDepth);
       }
     });
     getHistory().then(setHistory);
 
     // Proactively detect framework availability
-    chrome.runtime.sendMessage({ type: 'DETECT_FRAMEWORK' } satisfies RuntimeMessage);
+    chrome.runtime.sendMessage({
+      type: "DETECT_FRAMEWORK",
+    } satisfies RuntimeMessage);
     const timeout = setTimeout(() => {
       setFrameworkAvailable((prev) => (prev === null ? false : prev));
     }, 2000);
@@ -86,15 +130,15 @@ export default function App() {
   // Listen for results from background
   useEffect(() => {
     const handler = (msg: RuntimeMessage) => {
-      if (msg.type === 'DETECT_RESULT') {
+      if (msg.type === "DETECT_RESULT") {
         setFrameworkAvailable(msg.available);
-      } else if (msg.type === 'PICK_RESULT') {
-        setStatus({ kind: 'copied', path: msg.path, framework: msg.framework });
-        showToast('Copied!');
+      } else if (msg.type === "PICK_RESULT") {
+        setStatus({ kind: "copied", path: msg.path, framework: msg.framework });
+        showToast("Copied!");
         // History is saved by the background script; reload it
         getHistory().then(setHistory);
-      } else if (msg.type === 'PICK_ERROR') {
-        setStatus({ kind: 'error', message: msg.error });
+      } else if (msg.type === "PICK_ERROR") {
+        setStatus({ kind: "error", message: msg.error });
       }
     };
     chrome.runtime.onMessage.addListener(handler);
@@ -113,8 +157,11 @@ export default function App() {
   }
 
   function handlePick() {
-    setStatus({ kind: 'picking' });
-    chrome.runtime.sendMessage({ type: 'START_PICK', depth } satisfies RuntimeMessage);
+    setStatus({ kind: "picking" });
+    chrome.runtime.sendMessage({
+      type: "START_PICK",
+      depth,
+    } satisfies RuntimeMessage);
     window.close();
   }
 
@@ -122,7 +169,7 @@ export default function App() {
     navigator.clipboard.writeText(entry.path);
     setCopyFeedback(index);
     setTimeout(() => setCopyFeedback(null), 1500);
-    showToast('Copied!');
+    showToast("Copied!");
   }
 
   function handleClearHistory() {
@@ -132,7 +179,9 @@ export default function App() {
   return (
     <div className="popup">
       {toast && <div className="toast">{toast}</div>}
-      <h1><Logo /> Groove</h1>
+      <h1>
+        <Logo /> groove
+      </h1>
 
       <div className="field">
         <label htmlFor="depth">Depth</label>
@@ -149,36 +198,42 @@ export default function App() {
       <button
         className="pick-btn"
         onClick={handlePick}
-        disabled={frameworkAvailable !== true || status.kind === 'picking'}
+        disabled={frameworkAvailable !== true || status.kind === "picking"}
       >
-        {status.kind === 'picking'
-          ? 'Click an element...'
+        {status.kind === "picking"
+          ? "Click an element..."
           : frameworkAvailable === null
-            ? 'Detecting...'
-            : 'Pick Element'}
+            ? "Detecting..."
+            : "Pick Element"}
       </button>
 
-      {status.kind === 'copied' && (
+      {status.kind === "copied" && (
         <div className="result success">
           <span className={`framework-badge framework-${status.framework}`}>
             {status.framework}
-          </span>
-          {' '}Copied: <code><HighlightedPath path={status.path} /></code>
+          </span>{" "}
+          Copied:{" "}
+          <code>
+            <HighlightedPath path={status.path} />
+          </code>
         </div>
       )}
 
-      {status.kind === 'error' && (
+      {status.kind === "error" && (
         <div className="result error">{status.message}</div>
       )}
 
       {frameworkAvailable === false && (
         <div className="result info">
-          No supported framework detected. Works with React, Vue, Angular, or Svelte dev builds.
+          No supported framework detected. Works with React, Vue, Angular, or
+          Svelte dev builds.
         </div>
       )}
 
       {frameworkAvailable !== false && (
-        <p className="note">Best results on dev builds (React, Vue, Angular, Svelte)</p>
+        <p className="note">
+          Best results on dev builds (React, Vue, Angular, Svelte)
+        </p>
       )}
 
       {history.length > 0 && (
@@ -193,15 +248,19 @@ export default function App() {
             {history.map((entry, i) => (
               <div
                 key={entry.timestamp}
-                className={`history-item${copyFeedback === i ? ' copied' : ''}`}
+                className={`history-item${copyFeedback === i ? " copied" : ""}`}
                 onClick={() => handleHistoryCopy(entry, i)}
                 onMouseEnter={() => setHoveredPath(entry.path)}
                 onMouseLeave={() => setHoveredPath(null)}
               >
-                <span className={`framework-badge framework-${entry.framework}`}>
+                <span
+                  className={`framework-badge framework-${entry.framework}`}
+                >
                   {entry.framework}
                 </span>
-                <span className="history-item-path"><HighlightedPath path={entry.path} /></span>
+                <span className="history-item-path">
+                  <HighlightedPath path={entry.path} />
+                </span>
                 <span className="history-item-time">
                   {formatRelativeTime(entry.timestamp)}
                 </span>
@@ -209,12 +268,19 @@ export default function App() {
             ))}
           </div>
           {hoveredPath && (
-            <div className="history-preview"><HighlightedPath path={hoveredPath} /></div>
+            <div className="history-preview">
+              <HighlightedPath path={hoveredPath} />
+            </div>
           )}
         </div>
       )}
 
-      <a className="coffee-link" href="https://buymeacoffee.com/michal.hachula" target="_blank" rel="noopener noreferrer">
+      <a
+        className="coffee-link"
+        href="https://buymeacoffee.com/michal.hachula"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         ☕ Buy me a coffee
       </a>
     </div>

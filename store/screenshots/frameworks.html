@@ -1,175 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=1280, height=800">
-<title>Groove - Framework Support</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 1280px;
-    height: 800px;
-    background: #0d1117;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 48px;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>groove - framework Support</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 1280px;
+        height: 800px;
+        background: #0d1117;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+      }
 
-  .title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #e6edf3;
-    text-align: center;
-  }
+      .title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #e6edf3;
+        text-align: center;
+      }
 
-  .title span {
-    color: #F97316;
-  }
+      .title span {
+        color: #f97316;
+      }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    width: 960px;
-  }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        width: 960px;
+      }
 
-  .card {
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 12px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+      .card {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
 
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-  .framework-badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #fff;
-  }
-  .framework-react { background: #0ea5e9; }
-  .framework-vue { background: #42b883; }
-  .framework-angular { background: #dd1b16; }
-  .framework-svelte { background: #ff3e00; }
+      .framework-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #fff;
+      }
+      .framework-react {
+        background: #0ea5e9;
+      }
+      .framework-vue {
+        background: #42b883;
+      }
+      .framework-angular {
+        background: #dd1b16;
+      }
+      .framework-svelte {
+        background: #ff3e00;
+      }
 
-  .card-name {
-    color: #e6edf3;
-    font-size: 18px;
-    font-weight: 600;
-  }
+      .card-name {
+        color: #e6edf3;
+        font-size: 18px;
+        font-weight: 600;
+      }
 
-  /* Tooltip mockup */
-  .tooltip {
-    background: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    color: #e6edf3;
-    white-space: pre;
-  }
+      /* Tooltip mockup */
+      .tooltip {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #e6edf3;
+        white-space: pre;
+      }
 
-  .tooltip .target {
-    font-weight: 700;
-    background: rgba(249, 115, 22, 0.15);
-    padding: 0 4px;
-    border-radius: 3px;
-  }
+      .tooltip .target {
+        font-weight: 700;
+        background: rgba(249, 115, 22, 0.15);
+        padding: 0 4px;
+        border-radius: 3px;
+      }
 
-  .tooltip .target-react { color: #0ea5e9; }
-  .tooltip .target-vue { color: #42b883; }
-  .tooltip .target-angular { color: #dd1b16; }
-  .tooltip .target-svelte { color: #ff3e00; }
+      .tooltip .target-react {
+        color: #0ea5e9;
+      }
+      .tooltip .target-vue {
+        color: #42b883;
+      }
+      .tooltip .target-angular {
+        color: #dd1b16;
+      }
+      .tooltip .target-svelte {
+        color: #ff3e00;
+      }
 
-  .card-path {
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 12px;
-    color: #8b949e;
-    padding: 6px 10px;
-    background: #0d1117;
-    border-radius: 4px;
-    border: 1px solid #30363d;
-  }
+      .card-path {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-size: 12px;
+        color: #8b949e;
+        padding: 6px 10px;
+        background: #0d1117;
+        border-radius: 4px;
+        border: 1px solid #30363d;
+      }
 
-  .card-path .highlight {
-    color: #F97316;
-    font-weight: 600;
-  }
-</style>
-</head>
-<body>
-  <div class="title">Works with <span>4 major frameworks</span></div>
+      .card-path .highlight {
+        color: #f97316;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Works with <span>4 major frameworks</span></div>
 
-  <div class="grid">
-    <!-- React -->
-    <div class="card">
-      <div class="card-header">
-        <span class="framework-badge framework-react">react</span>
-        <span class="card-name">React</span>
+    <div class="grid">
+      <!-- React -->
+      <div class="card">
+        <div class="card-header">
+          <span class="framework-badge framework-react">react</span>
+          <span class="card-name">React</span>
+        </div>
+        <div class="tooltip">
+          &#9500; App &nbsp;&#9500; Dashboard &nbsp;&nbsp;&#9500; StatsGrid
+          &nbsp;&nbsp;&nbsp;&#9492;
+          <span class="target target-react">MetricCard</span>
+        </div>
+        <div class="card-path">
+          App &gt; Dashboard &gt; StatsGrid &gt;
+          <span class="highlight">MetricCard</span>
+        </div>
       </div>
-      <div class="tooltip">&#9500; App
-&nbsp;&#9500; Dashboard
-&nbsp;&nbsp;&#9500; StatsGrid
-&nbsp;&nbsp;&nbsp;&#9492; <span class="target target-react">MetricCard</span></div>
-      <div class="card-path">App &gt; Dashboard &gt; StatsGrid &gt; <span class="highlight">MetricCard</span></div>
-    </div>
 
-    <!-- Vue -->
-    <div class="card">
-      <div class="card-header">
-        <span class="framework-badge framework-vue">vue</span>
-        <span class="card-name">Vue</span>
+      <!-- Vue -->
+      <div class="card">
+        <div class="card-header">
+          <span class="framework-badge framework-vue">vue</span>
+          <span class="card-name">Vue</span>
+        </div>
+        <div class="tooltip">
+          &#9500; App &nbsp;&#9500; MainLayout &nbsp;&nbsp;&#9500; ProductList
+          &nbsp;&nbsp;&nbsp;&#9492;
+          <span class="target target-vue">ProductCard</span>
+        </div>
+        <div class="card-path">
+          App &gt; MainLayout &gt; ProductList &gt;
+          <span class="highlight">ProductCard</span>
+        </div>
       </div>
-      <div class="tooltip">&#9500; App
-&nbsp;&#9500; MainLayout
-&nbsp;&nbsp;&#9500; ProductList
-&nbsp;&nbsp;&nbsp;&#9492; <span class="target target-vue">ProductCard</span></div>
-      <div class="card-path">App &gt; MainLayout &gt; ProductList &gt; <span class="highlight">ProductCard</span></div>
-    </div>
 
-    <!-- Angular -->
-    <div class="card">
-      <div class="card-header">
-        <span class="framework-badge framework-angular">angular</span>
-        <span class="card-name">Angular</span>
+      <!-- Angular -->
+      <div class="card">
+        <div class="card-header">
+          <span class="framework-badge framework-angular">angular</span>
+          <span class="card-name">Angular</span>
+        </div>
+        <div class="tooltip">
+          &#9500; AppComponent &nbsp;&#9500; UserModule &nbsp;&nbsp;&#9500;
+          ProfilePage &nbsp;&nbsp;&nbsp;&#9492;
+          <span class="target target-angular">AvatarComponent</span>
+        </div>
+        <div class="card-path">
+          AppComponent &gt; UserModule &gt; ProfilePage &gt;
+          <span class="highlight">AvatarComponent</span>
+        </div>
       </div>
-      <div class="tooltip">&#9500; AppComponent
-&nbsp;&#9500; UserModule
-&nbsp;&nbsp;&#9500; ProfilePage
-&nbsp;&nbsp;&nbsp;&#9492; <span class="target target-angular">AvatarComponent</span></div>
-      <div class="card-path">AppComponent &gt; UserModule &gt; ProfilePage &gt; <span class="highlight">AvatarComponent</span></div>
-    </div>
 
-    <!-- Svelte -->
-    <div class="card">
-      <div class="card-header">
-        <span class="framework-badge framework-svelte">svelte</span>
-        <span class="card-name">Svelte</span>
+      <!-- Svelte -->
+      <div class="card">
+        <div class="card-header">
+          <span class="framework-badge framework-svelte">svelte</span>
+          <span class="card-name">Svelte</span>
+        </div>
+        <div class="tooltip">
+          &#9500; App &nbsp;&#9500; TodoApp &nbsp;&nbsp;&#9500; TodoList
+          &nbsp;&nbsp;&nbsp;&#9492;
+          <span class="target target-svelte">TodoItem</span>
+        </div>
+        <div class="card-path">
+          App &gt; TodoApp &gt; TodoList &gt;
+          <span class="highlight">TodoItem</span>
+        </div>
       </div>
-      <div class="tooltip">&#9500; App
-&nbsp;&#9500; TodoApp
-&nbsp;&nbsp;&#9500; TodoList
-&nbsp;&nbsp;&nbsp;&#9492; <span class="target target-svelte">TodoItem</span></div>
-      <div class="card-path">App &gt; TodoApp &gt; TodoList &gt; <span class="highlight">TodoItem</span></div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

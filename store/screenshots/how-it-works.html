@@ -1,247 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=1280, height=800">
-<title>Groove - How It Works</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 1280px;
-    height: 800px;
-    background: #0d1117;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 60px;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>groove - how it works</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 1280px;
+        height: 800px;
+        background: #0d1117;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 60px;
+      }
 
-  .header {
-    text-align: center;
-  }
+      .header {
+        text-align: center;
+      }
 
-  .header h2 {
-    font-size: 36px;
-    font-weight: 700;
-    color: #e6edf3;
-    margin-bottom: 12px;
-  }
+      .header h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #e6edf3;
+        margin-bottom: 12px;
+      }
 
-  .header h2 span {
-    color: #F97316;
-  }
+      .header h2 span {
+        color: #f97316;
+      }
 
-  .header p {
-    font-size: 17px;
-    color: #8b949e;
-  }
+      .header p {
+        font-size: 17px;
+        color: #8b949e;
+      }
 
-  .steps {
-    display: flex;
-    gap: 48px;
-    align-items: flex-start;
-  }
+      .steps {
+        display: flex;
+        gap: 48px;
+        align-items: flex-start;
+      }
 
-  .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    width: 300px;
-    text-align: center;
-  }
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 300px;
+        text-align: center;
+      }
 
-  .step-icon {
-    width: 100px;
-    height: 100px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 44px;
-    position: relative;
-  }
+      .step-icon {
+        width: 100px;
+        height: 100px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 44px;
+        position: relative;
+      }
 
-  .step-number {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 28px;
-    height: 28px;
-    background: #F97316;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
-    color: #000;
-  }
+      .step-number {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 28px;
+        height: 28px;
+        background: #f97316;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #000;
+      }
 
-  .step-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #e6edf3;
-  }
+      .step-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #e6edf3;
+      }
 
-  .step-desc {
-    font-size: 14px;
-    color: #8b949e;
-    line-height: 1.6;
-  }
+      .step-desc {
+        font-size: 14px;
+        color: #8b949e;
+        line-height: 1.6;
+      }
 
-  /* Arrows between steps */
-  .arrow {
-    display: flex;
-    align-items: center;
-    margin-top: 38px;
-    color: #30363d;
-    font-size: 32px;
-  }
+      /* Arrows between steps */
+      .arrow {
+        display: flex;
+        align-items: center;
+        margin-top: 38px;
+        color: #30363d;
+        font-size: 32px;
+      }
 
-  /* Bottom tagline */
-  .tagline {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 24px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 8px;
-  }
+      /* Bottom tagline */
+      .tagline {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 24px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+      }
 
-  .tagline-text {
-    font-size: 15px;
-    color: #e6edf3;
-    font-weight: 500;
-  }
+      .tagline-text {
+        font-size: 15px;
+        color: #e6edf3;
+        font-weight: 500;
+      }
 
-  .tagline .framework-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #fff;
-  }
-  .framework-react { background: #0ea5e9; }
-  .framework-vue { background: #42b883; }
-  .framework-angular { background: #dd1b16; }
-  .framework-svelte { background: #ff3e00; }
+      .tagline .framework-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #fff;
+      }
+      .framework-react {
+        background: #0ea5e9;
+      }
+      .framework-vue {
+        background: #42b883;
+      }
+      .framework-angular {
+        background: #dd1b16;
+      }
+      .framework-svelte {
+        background: #ff3e00;
+      }
 
-  /* Picker icon */
-  .picker-icon {
-    color: #F97316;
-  }
+      /* Picker icon */
+      .picker-icon {
+        color: #f97316;
+      }
 
-  /* Click icon */
-  .click-icon {
-    position: relative;
-  }
+      /* Click icon */
+      .click-icon {
+        position: relative;
+      }
 
-  .click-icon .ring {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border: 2px solid rgba(249, 115, 22, 0.3);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+      .click-icon .ring {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border: 2px solid rgba(249, 115, 22, 0.3);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
 
-  /* Code snippet */
-  .code-block {
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 12px;
-    color: #56d364;
-    background: #0d1117;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #2ea043;
-    display: inline-block;
-    margin-top: 8px;
-  }
-</style>
-</head>
-<body>
-  <div class="header">
-    <h2>How <span>Groove</span> Works</h2>
-    <p>Copy component tree paths in 3 simple steps</p>
-  </div>
-
-  <div class="steps">
-    <!-- Step 1 -->
-    <div class="step">
-      <div class="step-icon">
-        <div class="step-number">1</div>
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          <line x1="11" y1="8" x2="11" y2="14"/>
-          <line x1="8" y1="11" x2="14" y2="11"/>
-        </svg>
-      </div>
-      <div class="step-title">Pick Element</div>
-      <div class="step-desc">Click "Pick Element" in the popup to activate the element picker on any page</div>
+      /* Code snippet */
+      .code-block {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-size: 12px;
+        color: #56d364;
+        background: #0d1117;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #2ea043;
+        display: inline-block;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h2>How <span>groove</span> Works</h2>
+      <p>Copy component tree paths in 3 simple steps</p>
     </div>
 
-    <div class="arrow">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#30363d" stroke-width="2" stroke-linecap="round">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12,5 19,12 12,19"/>
-      </svg>
-    </div>
-
-    <!-- Step 2 -->
-    <div class="step">
-      <div class="step-icon">
-        <div class="step-number">2</div>
-        <div class="click-icon">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round">
-            <path d="M5 3l14 8-6.5 2L9 19.5z" fill="rgba(249,115,22,0.2)"/>
+    <div class="steps">
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-icon">
+          <div class="step-number">1</div>
+          <svg
+            width="44"
+            height="44"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#F97316"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="11" y1="8" x2="11" y2="14" />
+            <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
-          <div class="ring"></div>
+        </div>
+        <div class="step-title">Pick Element</div>
+        <div class="step-desc">
+          Click "Pick Element" in the popup to activate the element picker on
+          any page
         </div>
       </div>
-      <div class="step-title">Click Component</div>
-      <div class="step-desc">Hover to preview the tree, then click any element to copy its component path</div>
-    </div>
 
-    <div class="arrow">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#30363d" stroke-width="2" stroke-linecap="round">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12,5 19,12 12,19"/>
-      </svg>
-    </div>
-
-    <!-- Step 3 -->
-    <div class="step">
-      <div class="step-icon">
-        <div class="step-number">3</div>
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#56d364" stroke-width="2" stroke-linecap="round">
-          <polyline points="20,6 9,17 4,12"/>
+      <div class="arrow">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#30363d"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12,5 19,12 12,19" />
         </svg>
       </div>
-      <div class="step-title">Path Copied</div>
-      <div class="step-desc">The full component tree path is copied to your clipboard automatically</div>
-      <div class="code-block">App &gt; Dashboard &gt; AnalyticsCard</div>
-    </div>
-  </div>
 
-  <div class="tagline">
-    <span class="tagline-text">Works with</span>
-    <span class="framework-badge framework-react">React</span>
-    <span class="framework-badge framework-vue">Vue</span>
-    <span class="framework-badge framework-angular">Angular</span>
-    <span class="framework-badge framework-svelte">Svelte</span>
-  </div>
-</body>
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-icon">
+          <div class="step-number">2</div>
+          <div class="click-icon">
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#F97316"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <path d="M5 3l14 8-6.5 2L9 19.5z" fill="rgba(249,115,22,0.2)" />
+            </svg>
+            <div class="ring"></div>
+          </div>
+        </div>
+        <div class="step-title">Click Component</div>
+        <div class="step-desc">
+          Hover to preview the tree, then click any element to copy its
+          component path
+        </div>
+      </div>
+
+      <div class="arrow">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#30363d"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12,5 19,12 12,19" />
+        </svg>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-icon">
+          <div class="step-number">3</div>
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#56d364"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <polyline points="20,6 9,17 4,12" />
+          </svg>
+        </div>
+        <div class="step-title">Path Copied</div>
+        <div class="step-desc">
+          The full component tree path is copied to your clipboard automatically
+        </div>
+        <div class="code-block">App &gt; Dashboard &gt; AnalyticsCard</div>
+      </div>
+    </div>
+
+    <div class="tagline">
+      <span class="tagline-text">Works with</span>
+      <span class="framework-badge framework-react">React</span>
+      <span class="framework-badge framework-vue">Vue</span>
+      <span class="framework-badge framework-angular">Angular</span>
+      <span class="framework-badge framework-svelte">Svelte</span>
+    </div>
+  </body>
 </html>

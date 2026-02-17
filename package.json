@@ -2,7 +2,7 @@
   "name": "groove",
   "description": "Copy component tree paths from any page (React, Vue, Angular, Svelte)",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.5",
   "type": "module",
   "scripts": {
     "dev": "wxt",

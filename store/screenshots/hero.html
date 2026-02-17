@@ -1,308 +1,397 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=1280, height=800">
-<title>Groove - Hero</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 1280px;
-    height: 800px;
-    background: #0d1117;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>groove - hero</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 1280px;
+        height: 800px;
+        background: #0d1117;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        overflow: hidden;
+      }
 
-  .scene {
-    position: relative;
-    width: 1280px;
-    height: 800px;
-  }
+      .scene {
+        position: relative;
+        width: 1280px;
+        height: 800px;
+      }
 
-  /* Simulated web page in background */
-  .fake-browser {
-    position: absolute;
-    top: 60px;
-    left: 120px;
-    width: 1040px;
-    height: 620px;
-    background: #161b22;
-    border-radius: 12px;
-    border: 1px solid #30363d;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
+      /* Simulated web page in background */
+      .fake-browser {
+        position: absolute;
+        top: 60px;
+        left: 120px;
+        width: 1040px;
+        height: 620px;
+        background: #161b22;
+        border-radius: 12px;
+        border: 1px solid #30363d;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
 
-  .browser-bar {
-    height: 40px;
-    background: #0d1117;
-    border-bottom: 1px solid #30363d;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    gap: 8px;
-  }
+      .browser-bar {
+        height: 40px;
+        background: #0d1117;
+        border-bottom: 1px solid #30363d;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 8px;
+      }
 
-  .browser-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-  .browser-dot.red { background: #f85149; }
-  .browser-dot.yellow { background: #d29922; }
-  .browser-dot.green { background: #2ea043; }
+      .browser-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .browser-dot.red {
+        background: #f85149;
+      }
+      .browser-dot.yellow {
+        background: #d29922;
+      }
+      .browser-dot.green {
+        background: #2ea043;
+      }
 
-  .browser-url {
-    flex: 1;
-    margin-left: 12px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    padding: 4px 12px;
-    color: #8b949e;
-    font-size: 13px;
-    font-family: ui-monospace, SFMono-Regular, monospace;
-  }
+      .browser-url {
+        flex: 1;
+        margin-left: 12px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 4px 12px;
+        color: #8b949e;
+        font-size: 13px;
+        font-family: ui-monospace, SFMono-Regular, monospace;
+      }
 
-  .browser-content {
-    padding: 32px;
-  }
+      .browser-content {
+        padding: 32px;
+      }
 
-  /* Fake page content */
-  .fake-nav {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 32px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #30363d;
-  }
+      /* Fake page content */
+      .fake-nav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #30363d;
+      }
 
-  .fake-nav-logo {
-    font-size: 18px;
-    font-weight: 700;
-    color: #e6edf3;
-  }
+      .fake-nav-logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #e6edf3;
+      }
 
-  .fake-nav-links {
-    display: flex;
-    gap: 20px;
-  }
+      .fake-nav-links {
+        display: flex;
+        gap: 20px;
+      }
 
-  .fake-nav-link {
-    color: #8b949e;
-    font-size: 14px;
-  }
+      .fake-nav-link {
+        color: #8b949e;
+        font-size: 14px;
+      }
 
-  .fake-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-    margin-top: 24px;
-  }
+      .fake-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+        margin-top: 24px;
+      }
 
-  .fake-card {
-    background: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 8px;
-    padding: 20px;
-    height: 160px;
-  }
+      .fake-card {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 20px;
+        height: 160px;
+      }
 
-  .fake-card-title {
-    color: #e6edf3;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
+      .fake-card-title {
+        color: #e6edf3;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
 
-  .fake-card-text {
-    color: #8b949e;
-    font-size: 13px;
-    line-height: 1.5;
-  }
+      .fake-card-text {
+        color: #8b949e;
+        font-size: 13px;
+        line-height: 1.5;
+      }
 
-  .fake-card-btn {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 16px;
-    background: #F97316;
-    color: #fff;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-  }
+      .fake-card-btn {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 6px 16px;
+        background: #f97316;
+        color: #fff;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+      }
 
-  /* Orange picker overlay on targeted card */
-  .picker-highlight {
-    position: absolute;
-    top: 322px;
-    left: 152px;
-    width: 296px;
-    height: 160px;
-    border: 2px solid #F97316;
-    background: rgba(249, 115, 22, 0.08);
-    border-radius: 8px;
-    pointer-events: none;
-  }
+      /* Orange picker overlay on targeted card */
+      .picker-highlight {
+        position: absolute;
+        border: 2px solid #f97316;
+        background: rgba(249, 115, 22, 0.08);
+        border-radius: 8px;
+        pointer-events: none;
+        display: none;
+      }
 
-  /* Component tree tooltip */
-  .tooltip {
-    position: absolute;
-    top: 168px;
-    left: 152px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    color: #e6edf3;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-    white-space: pre;
-    z-index: 10;
-  }
+      /* Component tree tooltip */
+      .tooltip {
+        position: absolute;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #e6edf3;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        white-space: pre;
+        z-index: 10;
+        display: none;
+      }
 
-  .tooltip .badge {
-    display: inline-block;
-    background: #0ea5e9;
-    color: #000;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 11px;
-    margin-bottom: 6px;
-  }
+      .tooltip .badge {
+        display: inline-block;
+        background: #0ea5e9;
+        color: #000;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+        margin-bottom: 6px;
+      }
 
-  .tooltip .target {
-    color: #F97316;
-    font-weight: 700;
-    background: rgba(249, 115, 22, 0.15);
-    padding: 0 4px;
-    border-radius: 3px;
-  }
+      .tooltip .target {
+        color: #f97316;
+        font-weight: 700;
+        background: rgba(249, 115, 22, 0.15);
+        padding: 0 4px;
+        border-radius: 3px;
+      }
 
-  /* Branding overlay */
-  .branding {
-    position: absolute;
-    bottom: 40px;
-    right: 80px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+      /* Branding overlay */
+      .branding {
+        position: absolute;
+        bottom: 40px;
+        right: 80px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-  .branding-text {
-    font-size: 32px;
-    font-weight: 700;
-    color: #e6edf3;
-  }
+      .branding-text {
+        font-size: 32px;
+        font-weight: 700;
+        color: #e6edf3;
+      }
 
-  .branding-sub {
-    font-size: 15px;
-    color: #8b949e;
-    margin-top: 4px;
-  }
+      .branding-sub {
+        font-size: 15px;
+        color: #8b949e;
+        margin-top: 4px;
+      }
 
-  .branding-logo {
-    width: 48px;
-    height: 48px;
-  }
+      .branding-logo {
+        width: 48px;
+        height: 48px;
+      }
 
-  /* Cursor */
-  .cursor {
-    position: absolute;
-    top: 380px;
-    left: 300px;
-    z-index: 20;
-  }
+      /* Cursor */
+      .cursor {
+        position: absolute;
+        z-index: 20;
+        display: none;
+      }
 
-  .cursor svg {
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  }
-</style>
-</head>
-<body>
-  <div class="scene">
-    <div class="fake-browser">
-      <div class="browser-bar">
-        <div class="browser-dot red"></div>
-        <div class="browser-dot yellow"></div>
-        <div class="browser-dot green"></div>
-        <div class="browser-url">localhost:3000</div>
-      </div>
-      <div class="browser-content">
-        <div class="fake-nav">
-          <div class="fake-nav-logo">MyApp</div>
-          <div class="fake-nav-links">
-            <span class="fake-nav-link">Dashboard</span>
-            <span class="fake-nav-link">Settings</span>
-            <span class="fake-nav-link">Profile</span>
+      .cursor svg {
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene">
+      <div class="fake-browser">
+        <div class="browser-bar">
+          <div class="browser-dot red"></div>
+          <div class="browser-dot yellow"></div>
+          <div class="browser-dot green"></div>
+          <div class="browser-url">localhost:3000</div>
+        </div>
+        <div class="browser-content">
+          <div class="fake-nav">
+            <div class="fake-nav-logo">myapp</div>
+            <div class="fake-nav-links">
+              <span class="fake-nav-link">Dashboard</span>
+              <span class="fake-nav-link">Settings</span>
+              <span class="fake-nav-link">Profile</span>
+            </div>
+          </div>
+          <div class="fake-content">
+            <div class="fake-card" id="target-card">
+              <div class="fake-card-title">Analytics</div>
+              <div class="fake-card-text">
+                View your app metrics and performance data
+              </div>
+              <div class="fake-card-btn">View</div>
+            </div>
+            <div class="fake-card">
+              <div class="fake-card-title">Users</div>
+              <div class="fake-card-text">
+                Manage user accounts and permissions
+              </div>
+              <div class="fake-card-btn">Manage</div>
+            </div>
+            <div class="fake-card">
+              <div class="fake-card-title">Settings</div>
+              <div class="fake-card-text">
+                Configure your application preferences
+              </div>
+              <div class="fake-card-btn">Configure</div>
+            </div>
           </div>
         </div>
-        <div class="fake-content">
-          <div class="fake-card">
-            <div class="fake-card-title">Analytics</div>
-            <div class="fake-card-text">View your app metrics and performance data</div>
-            <div class="fake-card-btn">View</div>
-          </div>
-          <div class="fake-card">
-            <div class="fake-card-title">Users</div>
-            <div class="fake-card-text">Manage user accounts and permissions</div>
-            <div class="fake-card-btn">Manage</div>
-          </div>
-          <div class="fake-card">
-            <div class="fake-card-title">Settings</div>
-            <div class="fake-card-text">Configure your application preferences</div>
-            <div class="fake-card-btn">Configure</div>
-          </div>
-        </div>
       </div>
-    </div>
 
-    <!-- Picker overlay -->
-    <div class="picker-highlight"></div>
+      <!-- Picker overlay - positioned by JS -->
+      <div class="picker-highlight" id="highlight"></div>
 
-    <!-- Tooltip showing component tree -->
-    <div class="tooltip"><span class="badge">react</span>
-&#9500; App
-&nbsp;&#9500; Dashboard
-&nbsp;&nbsp;&#9492; <span class="target">AnalyticsCard</span></div>
+      <!-- Tooltip showing component tree - positioned by JS -->
+      <div class="tooltip" id="tooltip">
+        <span class="badge">react</span> &#9500; App &nbsp;&#9500; Dashboard
+        &nbsp;&nbsp;&#9492; <span class="target">AnalyticsCard</span>
+      </div>
 
-    <!-- Cursor icon -->
-    <div class="cursor">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="#000" stroke-width="1">
-        <path d="M5 3l14 8-6.5 2L9 19.5z"/>
-      </svg>
-    </div>
-
-    <!-- Branding -->
-    <div class="branding">
-      <div>
-        <svg class="branding-logo" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="64" y1="28" x2="36" y2="60" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
-          <line x1="64" y1="28" x2="92" y2="60" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
-          <line x1="36" y1="68" x2="20" y2="96" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="36" y1="68" x2="52" y2="96" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="92" y1="68" x2="92" y2="96" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="64" cy="22" r="12" fill="#F97316"/>
-          <circle cx="36" cy="64" r="9" fill="#F97316" opacity="0.85"/>
-          <circle cx="92" cy="64" r="9" fill="#F97316" opacity="0.85"/>
-          <circle cx="20" cy="100" r="7" fill="#F97316" opacity="0.65"/>
-          <circle cx="52" cy="100" r="7" fill="#F97316" opacity="0.65"/>
-          <circle cx="92" cy="100" r="7" fill="#F97316" opacity="0.65"/>
+      <!-- Cursor icon - positioned by JS -->
+      <div class="cursor" id="cursor">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="white"
+          stroke="#000"
+          stroke-width="1"
+        >
+          <path d="M5 3l14 8-6.5 2L9 19.5z" />
         </svg>
       </div>
-      <div>
-        <div class="branding-text">Groove</div>
-        <div class="branding-sub">Copy component tree paths with a click</div>
+
+      <!-- Branding -->
+      <div class="branding">
+        <div>
+          <svg
+            class="branding-logo"
+            viewBox="0 0 128 128"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line
+              x1="64"
+              y1="28"
+              x2="36"
+              y2="60"
+              stroke="#F97316"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <line
+              x1="64"
+              y1="28"
+              x2="92"
+              y2="60"
+              stroke="#F97316"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <line
+              x1="36"
+              y1="68"
+              x2="20"
+              y2="96"
+              stroke="#F97316"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="36"
+              y1="68"
+              x2="52"
+              y2="96"
+              stroke="#F97316"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="92"
+              y1="68"
+              x2="92"
+              y2="96"
+              stroke="#F97316"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <circle cx="64" cy="22" r="12" fill="#F97316" />
+            <circle cx="36" cy="64" r="9" fill="#F97316" opacity="0.85" />
+            <circle cx="92" cy="64" r="9" fill="#F97316" opacity="0.85" />
+            <circle cx="20" cy="100" r="7" fill="#F97316" opacity="0.65" />
+            <circle cx="52" cy="100" r="7" fill="#F97316" opacity="0.65" />
+            <circle cx="92" cy="100" r="7" fill="#F97316" opacity="0.65" />
+          </svg>
+        </div>
+        <div>
+          <div class="branding-text">groove</div>
+          <div class="branding-sub">Copy component tree paths with a click</div>
+        </div>
       </div>
     </div>
-  </div>
-</body>
+
+    <script>
+      // Position overlays based on actual rendered card position
+      const card = document.getElementById("target-card");
+      const highlight = document.getElementById("highlight");
+      const tooltip = document.getElementById("tooltip");
+      const cursor = document.getElementById("cursor");
+
+      const rect = card.getBoundingClientRect();
+
+      // Picker highlight: exactly on the card
+      highlight.style.top = rect.top + "px";
+      highlight.style.left = rect.left + "px";
+      highlight.style.width = rect.width + "px";
+      highlight.style.height = rect.height + "px";
+      highlight.style.display = "block";
+
+      // Tooltip: above the card with 8px gap
+      tooltip.style.display = "block";
+      const tooltipRect = tooltip.getBoundingClientRect();
+      tooltip.style.top = rect.top - tooltipRect.height - 8 + "px";
+      tooltip.style.left = rect.left + "px";
+
+      // Cursor: inside the card, near center-right
+      cursor.style.top = rect.top + rect.height * 0.55 + "px";
+      cursor.style.left = rect.left + rect.width * 0.55 + "px";
+      cursor.style.display = "block";
+    </script>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-# Groove
+# groove
 
 A browser extension that lets you click any element to copy its component ancestor path. Supports React, Vue, Angular, and Svelte.
 
@@ -64,19 +64,19 @@ There are no automated tests. The extension is tested manually against real webs
 
 ### What to Verify
 
-| Feature | How to test |
-|---|---|
-| **Pick mode** | Click "Pick Element" in the popup. The button should change to "Click an element..." |
-| **Overlay** | Move the mouse over page elements. An orange-bordered overlay should follow the cursor. |
-| **Hover tooltip** | After a short delay (~150ms), a tooltip should appear showing the component tree. |
-| **Click to copy** | Click an element. The component path should be copied to clipboard and shown in the popup. |
-| **Depth setting** | Set depth to e.g. `2` in the popup, then pick an element. Only the last 2 components should appear. Set to `0` for the full path. |
-| **History** | After copying a few paths, they should appear in the History section of the popup. |
-| **History copy** | Click a history entry to re-copy its path. A brief "Copied" feedback should appear. |
-| **Clear history** | Click "Clear" in the history header. All entries should be removed. |
-| **ESC to cancel** | While in pick mode, press Escape. Pick mode should stop and the overlay should disappear. |
-| **Framework detection** | Test on sites using different frameworks. The correct framework badge (react/vue/angular/svelte) should appear. |
-| **No framework** | Pick an element on a plain HTML page (no framework). An error message should appear: "No framework detected". |
+| Feature                 | How to test                                                                                                                       |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Pick mode**           | Click "Pick Element" in the popup. The button should change to "Click an element..."                                              |
+| **Overlay**             | Move the mouse over page elements. An orange-bordered overlay should follow the cursor.                                           |
+| **Hover tooltip**       | After a short delay (~150ms), a tooltip should appear showing the component tree.                                                 |
+| **Click to copy**       | Click an element. The component path should be copied to clipboard and shown in the popup.                                        |
+| **Depth setting**       | Set depth to e.g. `2` in the popup, then pick an element. Only the last 2 components should appear. Set to `0` for the full path. |
+| **History**             | After copying a few paths, they should appear in the History section of the popup.                                                |
+| **History copy**        | Click a history entry to re-copy its path. A brief "Copied" feedback should appear.                                               |
+| **Clear history**       | Click "Clear" in the history header. All entries should be removed.                                                               |
+| **ESC to cancel**       | While in pick mode, press Escape. Pick mode should stop and the overlay should disappear.                                         |
+| **Framework detection** | Test on sites using different frameworks. The correct framework badge (react/vue/angular/svelte) should appear.                   |
+| **No framework**        | Pick an element on a plain HTML page (no framework). An error message should appear: "No framework detected".                     |
 
 ### Tips
 
